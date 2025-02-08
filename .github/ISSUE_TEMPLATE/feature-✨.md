@@ -1,5 +1,5 @@
 ---
-name: "Feature \U0001F41E"
+name: "Feature \✨"
 about: 기능 구현
 title: ''
 labels: ''
