@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/TextField.scss';
+import '../../styles/TextField.scss';
 
 const TextField = ({
   size = 'medium',
