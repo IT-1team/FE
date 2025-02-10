@@ -2,9 +2,9 @@
 import React from "react";
 import * as ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Layout from "./components/Layout";
-import EmployeeRegistration from "./components/EmployeeRegistration";
+import EmployeeRegistration from "./pages/EmployeeRegistration";
 import "./App.css";
 
 function App() {

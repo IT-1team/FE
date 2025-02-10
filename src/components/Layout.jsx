@@ -1,6 +1,6 @@
 // 전체 레이아웃 컴포넌트
 import React from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "../pages/Sidebar";
 import "../styles/Layout.css";
 
 function Layout({ children }) {
