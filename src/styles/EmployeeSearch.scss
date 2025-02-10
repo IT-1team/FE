@@ -1,0 +1,17 @@
+.employee-search {
+  width: calc(100% - 40px);
+  max-width: 800px;
+  margin: auto;
+
+  .pagination {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
