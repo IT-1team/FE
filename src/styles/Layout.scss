@@ -1,9 +1,10 @@
 .layout {
   display: flex;
   min-height: 100vh;
+  gap: 40px;
 }
 
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 0 40px;
 }

@@ -6,6 +6,7 @@ $black : #000;
     width: $width;
     height: $height;
     font-size: $fontSize;
+    padding: 6px 8px;
 }
 
 @mixin buttonColor($backgroundColor, $textColor) {
@@ -20,7 +21,7 @@ $black : #000;
     @include buttonSize(170px, 55px, 30px);
 }
 .smallButton {
-    @include buttonSize(113px, 63px, 30px);
+    @include buttonSize(120px, 37px, 15px);
 
 }
 .dark {
@@ -28,7 +29,7 @@ $black : #000;
 
 }
 .bright {
-    @include buttonColor($white, $black);
+    @include buttonColor(#ccc, $black);
 }
 
 button {
