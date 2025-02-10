@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "/src/styles/Login.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '/src/styles/Login.scss';
 
 function Login() {
   const navigate = useNavigate();
   // 사용자 입력값을 관리하는 state
   const [credentials, setCredentials] = useState({
-    id: "",
-    password: "",
+    id: '',
+    password: '',
   });
 
   // 폼 제출 처리 함수
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    console.log("Login attempted with:", credentials);
-    navigate("/dashboard/register");
+    console.log('Login attempted with:', credentials);
+    navigate('/dashboard/registration');
   };
 
   // 입력값 변경 처리 함수
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    setCredentials((prev) => ({
+    setCredentials(prev => ({
       ...prev,
       [name]: value,
     }));

@@ -1,5 +1,3 @@
-import React from "react";
-
 export const ExcelUploadModal = ({
   isOpen,
   onClose,
@@ -9,14 +7,14 @@ export const ExcelUploadModal = ({
 }) => {
   if (!isOpen) return null;
 
-   const handleOverlayClick = (e) => {
-     if (e.target === e.currentTarget) {
-       onClose();
-     }
-   };
+  const handleOverlayClick = e => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
   const handleSubmit = () => {
     onClose();
-    alert("처리되었습니다");
+    alert('처리되었습니다');
   };
 
   return (
@@ -35,12 +33,12 @@ export const ExcelUploadModal = ({
               onChange={onFileChange}
               accept=".xlsx, .xls"
               ref={fileInputRef}
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
             />
             <input
               type="text"
               readOnly
-              value={selectedFile ? selectedFile.name : ""}
+              value={selectedFile ? selectedFile.name : ''}
               placeholder="파일을 선택하세요"
             />
             <button onClick={() => fileInputRef.current.click()}>

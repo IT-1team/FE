@@ -1,0 +1,21 @@
+$dark-blue : #0A4EA2;
+$white : #fff;
+$black : #000;
+
+.bigButton {
+    @include buttonSize(288px, 55px, 30px);
+}
+.mediumButton {
+    @include buttonSize(170px, 55px, 30px);
+}
+.smallButton {
+    @include buttonSize(113px, 63px, 30px);
+
+}
+.dark {
+    @include buttonColor($dark-blue, $white);
+
+}
+.bright {
+    @include buttonColor($white, $black);
+}

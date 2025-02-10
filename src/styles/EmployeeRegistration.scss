@@ -1,3 +1,9 @@
+$primary-color: #004B9D;
+$border-color: #ddd;
+$white: #fff;
+$black: #000;
+$background-light: #f5f5f5;
+
 .employee-registration {
   padding: 20px;
 }
@@ -7,31 +13,30 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   width: 100%;
-  
 }
 
 .form-group {
   margin-bottom: 15px;
-}
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
 
-.form-group input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+  }
 }
 
 .button-group {
   margin-top: 20px;
   display: flex;
   gap: 10px;
-  justify-content: flex-end;\
-  margin-left:auto;
+  justify-content: flex-end;
+  margin-left: auto;
 }
 
 .address-group {
@@ -46,26 +51,26 @@
 
 .address-search-btn {
   padding: 8px 15px;
-  background-color: #004B9D;
-  color: white;
+  background-color: $primary-color;
+  color: $white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-
-.submit-btn {
-  background-color: #004B9D;
-  color: white;
+.submit-btn, .modal-footer .submit-btn {
+  background-color: $primary-color;
+  color: $white;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
 }
 
 .excel-btn {
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: $white;
+  border: 1px solid $border-color;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
@@ -88,7 +93,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: white;
+  background-color: $white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 20px;
@@ -101,14 +106,14 @@
 .selected-file {
   margin: 15px 0;
   padding: 10px;
-  background-color: #f5f5f5;
+  background-color: $background-light;
   border-radius: 4px;
   word-break: break-all;
-}
 
-.selected-file span {
-  color: #333;
-  font-size: 14px;
+  span {
+    color: $black;
+    font-size: 14px;
+  }
 }
 
 .excel-modal {
@@ -119,22 +124,22 @@
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
-}
 
-.file-input-wrapper input[type="text"] {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
+  input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+  }
 
-.file-input-wrapper button {
-  padding: 8px 15px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  white-space: nowrap;
+  button {
+    padding: 8px 15px;
+    background-color: $white;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
 }
 
 .modal-footer {
@@ -143,55 +148,25 @@
   margin-top: 20px;
 }
 
-.modal-footer .submit-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #004B9D;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 .modal-header {
   text-align: center;
   position: relative;
-}
 
-.modal-header h3 {
-  margin: 0;
-}
+  h3 {
+    margin: 0;
+  }
 
-.close-button {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 5px;
-}
-
-.address-row {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.address-main, .address-sub {
-  display: flex;
-  gap: 10px;
-}
-
-.address-main input {
-  flex: 1;
-}
-
-.address-sub input {
-  flex: 1;
+  .close-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+  }
 }
 
 .address-row {
@@ -199,19 +174,15 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
-}
 
-.address-main, .address-sub {
-  display: flex;
-  gap: 10px;
-}
+  .address-main, .address-sub {
+    display: flex;
+    gap: 10px;
 
-.address-main input {
-  flex: 1;
-}
-
-.address-sub input {
-  flex: 1;
+    input {
+      flex: 1;
+    }
+  }
 }
 
 .address-modal {
