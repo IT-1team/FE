@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { AddressModal } from './AddressModal';
 import { ExcelUploadModal } from './ExcelUploadModal';
+import TextField from '../components/common/TextField';
 import '../styles/EmployeeRegistration.scss';
 
 //입력 전 초기 사원 정보는 공백으로 설정정
@@ -61,7 +62,6 @@ function EmployeeRegistration() {
     console.log('사원 정보:', employeeData);
   };
 
-  //파일 선택 처리
   // 파일 선택 처리
   const handleFileChange = e => {
     const file = e.target.files[0];

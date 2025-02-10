@@ -2,8 +2,19 @@ $dark-blue : #0A4EA2;
 $white : #fff;
 $black : #000;
 
+@mixin buttonSize($width, $height, $fontSize) {
+    width: $width;
+    height: $height;
+    font-size: $fontSize;
+}
+
+@mixin buttonColor($backgroundColor, $textColor) {
+    background-color: $backgroundColor;
+    color: $textColor;
+  }
+
 .bigButton {
-    @include buttonSize(288px, 55px, 30px);
+    @include buttonSize(400px, 40px, 20px);
 }
 .mediumButton {
     @include buttonSize(170px, 55px, 30px);
@@ -19,3 +30,19 @@ $black : #000;
 .bright {
     @include buttonColor($white, $black);
 }
+
+button {
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  
+    &:hover:not(:disabled) {
+      opacity: 0.9;
+    }
+  }
