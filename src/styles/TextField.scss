@@ -1,6 +1,6 @@
 .text-field {
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 4px;
     padding: 8px;
     font-family: inherit;
     outline: none;
@@ -20,15 +20,15 @@
 
     &--medium {
         font-size: 16px;
-        padding: 8px 12px;
-        height: 48px;
-        width: 218px;
+        padding: 6px 8px;
+        height: 25px;
+        width: 380px !important;
     }
 
     &--small {
         font-size: 16px;
         padding: 6px 8px;
-        height: 48px;
-        width: 115px;
+        height: 25px;
+        width: 250px !important
     }
 }

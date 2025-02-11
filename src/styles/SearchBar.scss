@@ -1,49 +1,64 @@
 .search-bar {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 10px; /* 요소 간 간격 */
+  margin-bottom: 2rem;
+
+  select,
+  input,
+  button {
+    height: 40px; /* 모든 요소의 높이를 동일하게 설정 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
+    font-size: 14px; /* 텍스트 크기 통일 */
+  }
+
+  select {
+    padding: 0 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+
+  input {
+    flex-grow: 1; /* 입력 필드가 남은 공간을 채움 */
+    padding: 0 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
 
   button {
-    padding: 10px;
+    padding: 0 15px; /* 버튼의 좌우 여백 */
     border-radius: 4px;
-    border: none;
     cursor: pointer;
 
     &.fetch-all-btn {
-      background-color: #6c757d;
-      color: white;
-      margin-right: 10px;
+      background-color: #f8f9fa;
+      color: #212529;
+      border: 1px solid #ced4da;
 
       &:hover {
-        background-color: #545b62;
+        background-color: #e2e6ea;
       }
     }
 
     &.search-btn {
-      background-color: #0a4ea2;
+      background-color: #007bff;
       color: white;
+      border: none;
 
       &:hover {
-        background-color: #083d82;
+        background-color: #0056b3;
       }
     }
-  }
-
-  select,
-  input {
-    padding: 10px;
-    margin-right: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-left: 1rem;
-
-    &:focus {
-      outline-color: #0a4ea2;
-    }
-  }
-
-  input {
-    flex-grow: 1;
-    min-width: 200px;
   }
 }

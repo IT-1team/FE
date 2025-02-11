@@ -16,11 +16,11 @@ const dummyData = [
   { empNum: '12347', name: '김민재', department: '영업', rank: '사원' },
   { empNum: '12348', name: '박지성', department: '마케팅', rank: '대리' },
   { empNum: '12349', name: '손흥민', department: 'IT 기획', rank: '부장' },
-  { empNum: '123410', name: '이강인', department: '인사', rank: '사원' },
-  { empNum: '123411', name: '황희찬', department: '재무', rank: '과장' },
-  { empNum: '123412', name: '조규성', department: 'IT 운영', rank: '대리' },
-  { empNum: '123413', name: '김연아', department: '영업', rank: '사원' },
-  { empNum: '123414', name: '유재석', department: '마케팅', rank: '부장' },
+  { empNum: '12350', name: '이강인', department: '인사', rank: '사원' },
+  { empNum: '12351', name: '황희찬', department: '재무', rank: '과장' },
+  { empNum: '12352', name: '조규성', department: 'IT 운영', rank: '대리' },
+  { empNum: '12353', name: '김연아', department: '영업', rank: '사원' },
+  { empNum: '12354', name: '유재석', department: '마케팅', rank: '부장' },
 ];
 
 //검색 옵션
@@ -31,11 +31,12 @@ const searchOptions = [
 ];
 
 const EmployeeSearch = () => {
-  const [searchType, setSearchType] = useState('name');
-  const [searchValue, setSearchValue] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  // 상태 변수 정의
+  const [searchType, setSearchType] = useState('name'); // 검색 유형
+  const [searchValue, setSearchValue] = useState(''); //검색어
+  const [filteredData, setFilteredData] = useState([]); //필터링된 데이터
+  const [currentPage, setCurrentPage] = useState(1); //현재 페이지
+  const [postsPerPage] = useState(10); //페이지당 표시할 항목 수수
   // 전체 조회 핸들러
   const handleFetchAll = () => {
     setFilteredData(dummyData);
@@ -57,6 +58,7 @@ const EmployeeSearch = () => {
   // 페이지 변경 핸들러
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
+  //컴포넌트 마운트 시 전체 데이터 로드드
   useEffect(() => {
     setFilteredData(dummyData);
   }, []);
