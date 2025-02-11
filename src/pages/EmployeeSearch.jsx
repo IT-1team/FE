@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
-import { SearchBar } from '../components/features/SearchBar';
+import { SearchBar } from '../components/common/SearchBar';
 import { EmployeeTable } from '../components/features/EmployeeTable';
 import '../styles/EmployeeSearch.scss';
-import '../styles/pagination.scss'
+import '../styles/pagination.scss';
 
 //dummy 데이터
 const dummyData = [

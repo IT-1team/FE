@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/SearchBar.scss';
-import Button from '../common/Button';
-import TextField from '../common/TextField';
+import Button from './Button';
+import TextField from './TextField';
 
 export function SearchBar({
   searchType,
@@ -32,7 +32,7 @@ export function SearchBar({
           <option value="empNum">사번</option>
           <option value="department">부서명</option>
         </select>
-        
+
         <TextField
           name="search"
           size="small"
