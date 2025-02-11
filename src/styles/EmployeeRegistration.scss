@@ -93,6 +93,32 @@ $background-light: #f5f5f5;
   }
 }
 
+  // 날짜 선택 그룹 스타일 수정
+  .hire-date-group {
+    margin-left: -10px; // gap 크기만큼 negative margin
+    
+    .date-picker-container {
+      position: relative;
+      
+      .text-field {
+        width: 380px !important;
+      }
+    }
+
+
+
+    .calendar-popup {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      z-index: 1000;
+      background-color: $white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
+  }
+
+
 .button-group {
   margin-top: 40px;  
   display: flex;
