@@ -36,7 +36,7 @@ const EmployeeSearch = () => {
   const [searchType, setSearchType] = useState('name'); // 검색 유형
   const [searchValue, setSearchValue] = useState(''); //검색어
   const [filteredData, setFilteredData] = useState([]); //필터링된 데이터
-  const [currentPage, setCurrentPage] = useState(1); //현재 페이지
+  const [currentPage, setCurrentPage] = useState(0); //현재 페이지
   const itemsPerPage = 10;
   //const [postsPerPage] = useState(10);//페이지당 표시할 항목 수수
   // 전체 조회 핸들러
