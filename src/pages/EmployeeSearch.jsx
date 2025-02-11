@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import ReactPaginate from 'react-paginate';
 import { SearchBar } from '../components/features/SearchBar';
 import { EmployeeTable } from '../components/features/EmployeeTable';
-import Pagination from '../components/common/Pagination';
 import '../styles/EmployeeSearch.scss';
+import '../styles/pagination.scss'
 
 //dummy 데이터
 const dummyData = [
@@ -36,7 +37,8 @@ const EmployeeSearch = () => {
   const [searchValue, setSearchValue] = useState(''); //검색어
   const [filteredData, setFilteredData] = useState([]); //필터링된 데이터
   const [currentPage, setCurrentPage] = useState(1); //현재 페이지
-  const [postsPerPage] = useState(10); //페이지당 표시할 항목 수수
+  const itemsPerPage = 10;
+  //const [postsPerPage] = useState(10);//페이지당 표시할 항목 수수
   // 전체 조회 핸들러
   const handleFetchAll = () => {
     setFilteredData(dummyData);
@@ -51,12 +53,13 @@ const EmployeeSearch = () => {
   };
 
   // 현재 페이지의 데이터 계산
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredData.slice(indexOfFirstPost, indexOfLastPost);
+  const offset = currentPage * itemsPerPage;
+  const currentPageData = filteredData.slice(offset, offset + itemsPerPage);
 
   // 페이지 변경 핸들러
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   //컴포넌트 마운트 시 전체 데이터 로드드
   useEffect(() => {
@@ -73,12 +76,25 @@ const EmployeeSearch = () => {
         onFetchAll={handleFetchAll}
         onSearch={handleSearch}
       />
-      <EmployeeTable data={currentPosts} />
-      <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={filteredData.length}
-        paginate={paginate}
-        currentPage={currentPage}
+      <EmployeeTable data={currentPageData} />
+      <ReactPaginate
+        previousLabel={'이전'}
+        nextLabel={'다음'}
+        breakLabel={'...'}
+        pageCount={Math.ceil(filteredData.length / itemsPerPage)}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageChange}
+        containerClassName={'pagination'}
+        pageClassName={'page-item'}
+        pageLinkClassName={'page-link'}
+        previousClassName={'page-item'}
+        previousLinkClassName={'page-link'}
+        nextClassName={'page-item'}
+        nextLinkClassName={'page-link'}
+        breakClassName={'page-item'}
+        breakLinkClassName={'page-link'}
+        activeClassName={'active'}
       />
     </div>
   );
