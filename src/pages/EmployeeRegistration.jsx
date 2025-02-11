@@ -3,6 +3,8 @@ import { AddressModal } from './AddressModal';
 import { ExcelUploadModal } from './ExcelUploadModal';
 import TextField from '../components/common/TextField';
 import Button from '../components/common/Button';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import '../styles/EmployeeRegistration.scss';
 
 //입력 전 초기 사원 정보는 공백으로 설정정
@@ -26,17 +28,23 @@ const ALLOWED_EXCEL_TYPES = [
   'application/vnd.ms-excel',
 ];
 
-const DEPARTMENT_OPTIONS = [
-  { value: '한국무브네스', label: '한국무브네스' },
-  { value: '서한이노빌리티', label: '서한이노빌리티' },
-  { value: '캄텍', label: '캄텍' },
-  { value: '서한ENP', label: '서한ENP' },
-  { value: '기획본부', label: '기획본부' },
-];
+const DEPARTMENT_TEAMS = {
+  한국무브네스: ['안전', '영업', '품질'],
+  서한이노빌리티: ['품질', '공정기술', 'ESG'],
+  캄텍: ['품질', 'SOE', '영업', '생산관리'],
+  서한ENP: ['인사'],
+  기획본부: ['인사', 'IT기획'],
+};
+
+const DEPARTMENT_OPTIONS = Object.keys(DEPARTMENT_TEAMS).map(dept => ({
+  value: dept,
+  label: dept,
+}));
 
 function EmployeeRegistration() {
   //파일 정보 상태 관리
   const [isExcelModalOpen, setExcelModalOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -49,10 +57,36 @@ function EmployeeRegistration() {
   // 입력값 변경 처리
   const handleChange = e => {
     const { name, value } = e.target;
+    setEmployeeData(prev => {
+      // 부서가 변경되면 팀 선택을 초기화
+      if (name === 'departmentName') {
+        return {
+          ...prev,
+          [name]: value,
+          teamName: '',
+        };
+      }
+      //다른 모든 필드의 변경사항도 처리
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  // 날짜 선택 처리 함수
+  const handleDateChange = date => {
+    // 날짜를 YYYY-MM-DD 형식으로 직접 변환
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
     setEmployeeData(prev => ({
       ...prev,
-      [name]: value,
+      hireDate: formattedDate,
     }));
+    setCalendarOpen(false);
   };
 
   // 주소 검색 완료 처리
@@ -80,6 +114,11 @@ function EmployeeRegistration() {
       alert('엑셀 파일만 업로드 가능합니다.');
       setSelectedFile(null);
     }
+  };
+
+  // 선택된 부서에 따른 팀 옵션 가져오기
+  const getTeamOptions = () => {
+    return DEPARTMENT_TEAMS[employeeData.departmentName] || [];
   };
 
   return (
@@ -144,13 +183,20 @@ function EmployeeRegistration() {
             </div>
             <div className="form-group">
               <label>팀명</label>
-              <TextField
+              <select
                 name="teamName"
-                size="medium"
-                placeholder="팀명을 입력하세요"
+                className="form-select"
                 value={employeeData.teamName}
                 onChange={handleChange}
-              />
+                disabled={!employeeData.departmentName}
+              >
+                <option value="">팀을 선택하세요</option>
+                {getTeamOptions().map(team => (
+                  <option key={team} value={team}>
+                    {team}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -212,13 +258,35 @@ function EmployeeRegistration() {
             </div>
             <div className="form-group">
               <label>입사일자</label>
-              <TextField
-                name="hireDate"
-                size="medium"
-                placeholder="입사일자를 선택하세요"
-                value={employeeData.hireDate}
-                onChange={handleChange}
-              />
+              <div className="hire-date-group">
+                <div className="date-picker-container">
+                  <TextField
+                    name="hireDate"
+                    size="medium"
+                    placeholder="입사일자를 선택하세요"
+                    value={employeeData.hireDate}
+                    onClick={() => setCalendarOpen(!calendarOpen)}
+                    readOnly
+                  />
+                  {calendarOpen && (
+                    <div className="calendar-popup">
+                      <Calendar
+                        onChange={handleDateChange}
+                        value={
+                          employeeData.hireDate
+                            ? new Date(employeeData.hireDate)
+                            : new Date()
+                        }
+                        maxDate={new Date()}
+                        calendarType="gregory"
+                        formatDay={(locale, date) =>
+                          date.toLocaleString('en', { day: 'numeric' })
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
             <div className="form-group">
               <label>임금</label>
@@ -235,7 +303,7 @@ function EmployeeRegistration() {
               <TextField
                 name="email"
                 type="email"
-                size="small"
+                size="medium"
                 placeholder="이메일을 입력하세요"
                 value={employeeData.email}
                 onChange={handleChange}
@@ -243,7 +311,6 @@ function EmployeeRegistration() {
             </div>
           </div>
         </div>
-
         <div className="button-group">
           <Button
             buttonSize="smallButton"
