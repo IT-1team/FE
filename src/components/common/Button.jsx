@@ -1,12 +1,12 @@
 import React from 'react';
 import '../../styles/Button.scss';
 
-const Button = ({ btnOn, buttonSize, buttonColor, children, action }) => {
+const Button = ({children, btnOn, buttonSize, buttonColor, action }) => {
   return (
     <button
       onClick={() => action()}
       disabled={btnOn}
-      className={`${buttonSize} ${buttonColor}`}
+      className={`Button ${buttonSize} ${buttonColor}`}
     >
       {children}
     </button>

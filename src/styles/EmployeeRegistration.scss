@@ -1,4 +1,4 @@
-$primary-color: #004B9D;
+$primary-color: #004b9d;
 $border-color: #ddd;
 $white: #fff;
 $black: #000;
@@ -47,18 +47,23 @@ $background-light: #f5f5f5;
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+  }
 }
 
-.address-search-btn {
-  padding: 8px 15px;
-  background-color: $primary-color;
-  color: $white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.submit-btn, .modal-footer .submit-btn {
+.submit-btn,
+.modal-footer .submit-btn {
   background-color: $primary-color;
   color: $white;
   padding: 10px 20px;
@@ -66,14 +71,6 @@ $background-light: #f5f5f5;
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
-}
-
-.excel-btn {
-  background-color: $white;
-  border: 1px solid $border-color;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 /* 공통 모달 스타일 */
@@ -125,7 +122,7 @@ $background-light: #f5f5f5;
   gap: 10px;
   margin-bottom: 15px;
 
-  input[type="text"] {
+  input[type='text'] {
     flex: 1;
     padding: 8px;
     border: 1px solid $border-color;
@@ -175,12 +172,16 @@ $background-light: #f5f5f5;
   gap: 10px;
   width: 100%;
 
-  .address-main, .address-sub {
+  .address-main,
+  .address-sub {
     display: flex;
     gap: 10px;
 
     input {
-      flex: 1;
+      width: 100%;
+      padding: 2px;
+      border: 1px solid $border-color;
+      border-radius: 4px;
     }
   }
 }

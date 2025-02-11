@@ -1,3 +1,7 @@
+@use 'sass:color';
+
+$blue: #007bff;
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -16,7 +20,7 @@
       border-radius: 5px;
 
       &:hover {
-        background-color: #007bff;
+        background-color: color.scale($blue, $lightness: 60%);
         color: white;
       }
     }

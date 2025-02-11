@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { AddressModal } from './AddressModal';
 import { ExcelUploadModal } from './ExcelUploadModal';
+import Button from '../components/common/Button';
 import '../styles/EmployeeRegistration.scss';
 
 //입력 전 초기 사원 정보는 공백으로 설정정
@@ -115,13 +116,14 @@ function EmployeeRegistration() {
                 readOnly
                 placeholder="기본주소"
               />
-              <button
-                type="button"
-                onClick={() => setAddressModalOpen(true)}
-                className="address-search-btn"
+              <Button
+                btnOn={false}
+                buttonSize="small"
+                buttonColor="blue"
+                action={() => setAddressModalOpen(true)}
               >
                 주소 검색
-              </button>
+              </Button>
             </div>
             <div className="address-sub">
               <input
@@ -156,16 +158,23 @@ function EmployeeRegistration() {
         </div>
         {/* 버튼 그룹 */}
         <div className="button-group">
-          <button
-            type="button"
-            className="excel-btn"
-            onClick={() => setExcelModalOpen(true)}
+          <Button
+            btnOn={false}
+            buttonSize="small"
+            buttonColor="gray"
+            action={() => setExcelModalOpen(true)}
           >
             사원 대량 등록(EXCEL)
-          </button>
-          <button type="submit" className="submit-btn">
+          </Button>
+
+          <Button
+            type="submit"
+            btnOn={false}
+            buttonSize="small"
+            buttonColor="blue"
+          >
             사원 등록
-          </button>
+          </Button>
         </div>
       </form>
       <AddressModal

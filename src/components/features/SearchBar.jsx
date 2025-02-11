@@ -1,5 +1,6 @@
 import React from 'react';
 import "../../styles/SearchBar.scss"
+import Button from '../common/Button';
 
 export function SearchBar({
   searchType,
@@ -11,9 +12,17 @@ export function SearchBar({
 }) {
   return (
     <div className="search-bar">
-      <button className="fetch-all-btn" onClick={onFetchAll}>
+      {/* <button className="fetch-all-btn" onClick={onFetchAll}>
         전체 조회
-      </button>
+      </button> */}
+      <Button
+        btnOn={false}
+        buttonSize="small"
+        buttonColor="gray"
+        action={onFetchAll}
+      >
+        전체 조회
+      </Button>
       <select
         value={searchType}
         onChange={e => setSearchType(e.target.value)}
@@ -30,9 +39,14 @@ export function SearchBar({
         placeholder="검색어를 입력하세요"
         className="search-input"
       />
-      <button className="search-btn" onClick={onSearch}>
+      <Button
+        btnOn={false}
+        buttonSize="small"
+        buttonColor="blue"
+        action={onSearch}
+      >
         검색
-      </button>
+      </Button>
     </div>
   );
 }
