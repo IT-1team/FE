@@ -6,7 +6,7 @@ $primary-color: #004B9D;
   table {
     width: 100%; /* 테이블이 부모 컨테이너의 너비를 모두 차지 */
     border-collapse: collapse; /* 테두리 간격 제거 */
-    table-layout: fixed; /* 열 너비를 균등하게 분배 */
+    table-layout: auto; /* 열 너비를 균등하게 분배 */
   }
   th,
   td {
