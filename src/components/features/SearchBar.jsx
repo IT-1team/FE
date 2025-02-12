@@ -4,16 +4,23 @@ import Button from '../common/Button';
 import TextField from '../common/TextField';
 
 export function SearchBar({
+  companies,
+  departments,
+  selectedCompany,
+  selectedDepartment,
   searchType,
-  setSearchType,
   searchValue,
-  setSearchValue,
+  searchOptions,
+  onCompanyChange,
+  onDepartmentChange,
+  onSearchTypeChange,
+  onSearchValueChange,
   onFetchAll,
   onSearch,
 }) {
   return (
     <div className="EmployeeSearch">
-      <h2>사원 조회</h2>
+      
       <div className="search-bar">
         <Button
           buttonSize="smallButton"
@@ -23,14 +30,40 @@ export function SearchBar({
         >
           전체 조회
         </Button>
+        {/* 계열사 선택 드롭다운 */}
+        <select
+          value={selectedCompany}
+          onChange={e => onCompanyChange(e.target.value)}
+        >
+          {companies.map(company => (
+            <option key={company} value={company}>
+              {company}
+            </option>
+          ))}
+        </select>
+
+        {/* 부서 선택 드롭다운 */}
+        <select
+          value={selectedDepartment}
+          onChange={e => onDepartmentChange(e.target.value)}
+        >
+          {departments.map(department => (
+            <option key={department} value={department}>
+              {department}
+            </option>
+          ))}
+        </select>
+
+        {/* 검색 유형 선택 드롭다운 */}
         <select
           value={searchType}
-          onChange={e => setSearchType(e.target.value)}
-          className="search-select"
+          onChange={e => onSearchTypeChange(e.target.value)}
         >
-          <option value="name">이름</option>
-          <option value="empNum">사번</option>
-          <option value="department">부서명</option>
+          {searchOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
         
         <TextField
