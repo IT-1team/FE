@@ -71,7 +71,7 @@ export function SearchBar({
           size="small"
           placeholder="검색어를 입력하세요"
           value={searchValue}
-          onChange={e => setSearchValue(e.target.value)}
+          onChange={e => onSearchValueChange(e.target.value)}
         />
         <Button
           buttonSize="smallButton"
