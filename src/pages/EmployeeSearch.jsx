@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate';
 import { SearchBar } from '../components/common/SearchBar';
 import { EmployeeTable } from '../components/features/EmployeeTable';
 import '../styles/EmployeeSearch.scss';
-import '../styles/pagination.scss'
+import '../styles/pagination.scss';
 
 //dummy 데이터
 const dummyData = [
@@ -196,8 +196,8 @@ const EmployeeSearch = () => {
 
   //컴포넌트 마운트 시 전체 데이터 로드드
   useEffect(() => {
-    setFilteredData(dummyData);
-  }, []);
+    handleSearch();
+  }, [selectedCompany, selectedDepartment, searchType, searchValue]);
 
   return (
     <div>

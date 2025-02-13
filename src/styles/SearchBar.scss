@@ -1,9 +1,15 @@
+
+.attendance-page .search-bar button:first-child {
+  display: none;
+}
+
 .search-bar {
   display: flex;
   align-items: center;
   gap: 10px; /* 요소 간 간격 */
   margin-bottom: 2rem;
 
+  
   select,
   input,
   button {
