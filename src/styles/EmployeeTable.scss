@@ -1,6 +1,7 @@
-$primary-color: #004B9D;
+$primary-color: #004b9d;
 
-.employee-table {
+.employee-table,
+.attendance-table {
   width: 100%;
   border-collapse: collapse;
   table {
@@ -23,5 +24,13 @@ $primary-color: #004B9D;
 
   tr:hover {
     background-color: #f9f9f9;
+  }
+  .status {
+    &.normal {
+      color: #198754;
+    }
+    &.abnormal {
+      color: #dc3545;
+    }
   }
 }

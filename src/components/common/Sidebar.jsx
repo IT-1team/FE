@@ -8,6 +8,7 @@ function Sidebar() {
   const menuItems = [
     { path: '/dashboard/registration', label: '사원 정보 등록' },
     { path: '/dashboard/search', label: '사원 조회' },
+    { path: '/dashboard/attendance', label: '근태 관리' },
   ];
 
   return (
