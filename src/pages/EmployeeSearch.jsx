@@ -232,8 +232,8 @@ const EmployeeSearch = () => {
           employee => ({
             empNum: employee.empNUM.toString(),
             name: employee.name,
-            department: '기획본부', // 임시 데이터
-            teamname: 'IT기획', // 임시 데이터
+            department: employee.departmentName,
+            teamname: employee.teamName,
             rank: employee.emRank,
             phoneNum: employee.phoneNum,
           })
