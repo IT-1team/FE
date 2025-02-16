@@ -6,19 +6,11 @@ const Button = ({
   buttonSize,
   buttonColor,
   children,
-  action,
   type = 'button',
 }) => {
-  const handleClick = () => {
-    if (action) {
-      action();
-    }
-  };
-
   return (
     <button
       type={type}
-      onClick={() => action()}
       disabled={btnOn}
       className={`${buttonSize} ${buttonColor}`}
     >
