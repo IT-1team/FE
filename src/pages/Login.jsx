@@ -21,10 +21,9 @@ function Login() {
   };
 
   // 폼 제출 처리 함수
-  const handleSubmit = e => {
+  const handleSubmit = (e = null) => {
     e.preventDefault();
-    console.log('Login attempted with:', credentials);
-    navigate('/dashboard/registration');
+    navigate('/dashboard');
   };
 
   return (
