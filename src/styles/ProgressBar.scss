@@ -1,0 +1,41 @@
+.progress-bar {
+  width: 100%;
+  margin: 0.5rem 0;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+
+  &__label {
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  &__count {
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+
+    .separator, .total {
+      color: #9CA3AF;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    height: 6px;
+    background-color: #E5E7EB;  // 진행되지 않은 부분의 회색
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 3px;
+  }
+}
