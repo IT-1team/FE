@@ -9,9 +9,10 @@ const Circle = ({
   className = '',
   icon: IconComponent,
   label = '',
+  labelPosition = 'bottom',
 }) => {
   return (
-    <div className="circle-container">
+    <div className={`circle-container circle-label-${labelPosition}`}>
       <div
         className={`profile-circle profile-circle--${size} ${
           border ? 'profile-circle--border' : ''
