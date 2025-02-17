@@ -1,36 +1,61 @@
 import React from 'react';
-import "../../styles/EmployeeTable.scss"
+import { useNavigate } from 'react-router-dom';
+import '../../styles/EmployeeTable.scss';
 
 export function EmployeeTable({ data }) {
+  const navigate = useNavigate();
+  console.log('Employee Data:', data);
+
   return (
     <div className="employee-table">
       <table>
         <thead>
-          <tr>
-            <th>사번</th>
-            <th>이름</th>
-            <th>부서명</th>
-            <th>팀명</th>
-            <th>직급</th>
-            <th>연락처</th>
+          <tr key="header">
+            <th key="header-empNum">사번</th>
+            <th key="header-name">이름</th>
+            <th key="header-department">부서명</th>
+            <th key="header-team">팀명</th>
+            <th key="header-rank">직급</th>
+            <th key="header-phone">연락처</th>
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? (
-            data.map(employee => (
-              <tr key={employee.empNum}>
-                <td>{employee.empNum}</td>
-                <td>{employee.name}</td>
-                <td>{employee.department}</td>
-                <td>{employee.teamname}</td>
-                <td>{employee.rank}</td>
-                <td>{employee.phoneNum}</td>
+          {data.length === 0 ? (
+            <tr key="no-data-row">
+              <td key="no-data-cell" colSpan="6">
+                데이터 없음
+              </td>
+            </tr>
+          ) : (
+            data.map((employee, index) => (
+              <tr
+                key={`row-${employee.empNUM}-${index}`}
+                onClick={() =>
+                  navigate(`/dashboard/search/${employee.employeeId}`)
+                }
+                style={{ cursor: 'pointer' }}
+                className="hover-row"
+              >
+                <td key={`cell-empNum-${employee.empNUM}-${index}`}>
+                  {employee.empNUM}
+                </td>
+                <td key={`cell-name-${employee.empNUM}-${index}`}>
+                  {employee.name}
+                </td>
+                <td key={`cell-department-${employee.empNUM}-${index}`}>
+                  {employee.departmentName}
+                </td>
+                <td key={`cell-teamname-${employee.empNUM}-${index}`}>
+                  {employee.teamName}
+                </td>
+                <td key={`cell-rank-${employee.empNUM}-${index}`}>
+                  {employee.emRank}
+                </td>
+                <td key={`cell-phoneNum-${employee.empNUM}-${index}`}>
+                  {employee.phoneNum}
+                </td>
               </tr>
             ))
-          ) : (
-            <tr>
-              <td colSpan="4">데이터 없음</td>
-            </tr>
           )}
         </tbody>
       </table>
