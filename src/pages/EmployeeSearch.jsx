@@ -4,7 +4,7 @@ import axios from 'axios';
 import { SearchBar } from '../components/common/SearchBar';
 import { EmployeeTable } from '../components/features/EmployeeTable';
 import '../styles/EmployeeSearch.scss';
-import '../styles/pagination.scss';
+import '../styles/Pagination.scss';
 
 //dummy 데이터
 // const dummyData = [
@@ -198,7 +198,6 @@ const EmployeeSearch = () => {
     }
   };
 
-
   //API 데이터 받아오기
   const fetchEmployees = async () => {
     try {
@@ -275,7 +274,6 @@ const EmployeeSearch = () => {
 
     initializeAuth();
   }, []);
-
 
   // 검색 핸들러
   const handleSearch = () => {
