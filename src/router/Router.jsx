@@ -2,6 +2,7 @@ import React from 'react';
 import RouterPath from './RouterPath';
 import EmployeeRegistration from '../pages/EmployeeRegistration';
 import EmployeeSearch from '../pages/EmployeeSearch';
+import EmployeeDetail from '../pages/EmployeeDetail';
 import Attendance from '../pages/Attendance';
 import Login from '../pages/Login';
 import Layout from '../components/features/Layout';
@@ -19,7 +20,7 @@ const Router = () => {
       element: <Layout />,
       children: [
         {
-          index: true, // Dashboard의 기본 경로를 LandingPage로 설정
+          index: true,
           element: <LandingPage />,
         },
         {
@@ -29,6 +30,10 @@ const Router = () => {
         {
           path: RouterPath.SEARCH,
           element: <EmployeeSearch />,
+        },
+        {
+          path: RouterPath.EMPLOYEE_DETAIL,
+          element: <EmployeeDetail />,
         },
         {
           path: RouterPath.ATTENDANCE,
