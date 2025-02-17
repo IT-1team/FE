@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { AddressModal } from './AddressModal';
 import { ExcelUploadModal } from './ExcelUploadModal';
+import { useNavigate } from 'react-router-dom';
 import TextField from '../components/common/TextField';
 import Button from '../components/common/Button';
 import Calendar from 'react-calendar';
@@ -50,6 +51,7 @@ function EmployeeRegistration() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [employeeData, setEmployeeData] = useState(INITIAL_EMPLOYEE_DATA);
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   // 입력값 변경 처리
   const handleChange = e => {
@@ -87,6 +89,8 @@ function EmployeeRegistration() {
 
   const handleSubmit = e => {
     e.preventDefault();
+    alert('사원이 등록되었습니다.');
+    navigate('/dashboard');
     // 여기에 제출 로직 추가
   };
 
