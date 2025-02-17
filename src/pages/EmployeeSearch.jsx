@@ -169,7 +169,7 @@ const EmployeeSearch = () => {
   const fetchToken = async () => {
     try {
       const response = await axios.post(
-        'http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/auth/login',
+        'https://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/auth/login',
         {
           loginId: 'admin01',
           password: 'password123',
