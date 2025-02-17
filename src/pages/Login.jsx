@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import '/src/styles/Login.scss';
+import { useLogin } from '../api/hooks/authAPI';
 
 function Login() {
   const navigate = useNavigate();
   // 사용자 입력값을 관리하는 state
   const [credentials, setCredentials] = useState({
-    id: '',
+    loginId: '',
     password: '',
   });
+
+  //useLogin hook 사용
+  const { mutate: login, isLoading } = useLogin();
 
   // 입력값 변경 처리 함수
   const handleChange = e => {
@@ -23,7 +27,18 @@ function Login() {
   // 폼 제출 처리 함수
   const handleSubmit = (e = null) => {
     e.preventDefault();
-    navigate('/dashboard');
+
+    login(credentials, {
+      onSuccess: data => {
+        console.log('로그인 성공:', data.message);
+        //대시 보드로 이동
+        navigate('./dashboard');
+      },
+      onError: error => {
+        console.error('로그인 실패', error);
+        alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
+      },
+    });
   };
 
   return (
@@ -36,9 +51,9 @@ function Login() {
           <div className="input-group">
             <input
               type="text"
-              name="id"
+              name="loginId"
               placeholder="ID"
-              value={credentials.id}
+              value={credentials.loginId}
               onChange={handleChange}
             />
           </div>
@@ -52,12 +67,13 @@ function Login() {
             />
           </div>
           <Button
-            btnOn={!credentials.id || !credentials.password}
+            btnOn={!credentials.loginId || !credentials.password}
             buttonSize="bigButton"
             buttonColor="dark"
             type="submit"
+            disabled={isLoading}
           >
-            로그인
+            {isLoading ? '로그인 중...' : '로그인'}
           </Button>
         </form>
       </div>

@@ -67,7 +67,7 @@ const Attendance = () => {
   const fetchToken = async () => {
     try {
       const response = await axios.post(
-        'http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/auth/login',
+        'https://hrmaster.store/api/auth/login',
         {
           loginId: 'admin01',
           password: 'password123',
@@ -103,7 +103,7 @@ const Attendance = () => {
         let authToken = token || localStorage.getItem('authToken');
         const formattedDate = moment(date).format('YYYY-MM-DD');
         const response = await axios.get(
-          `http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/attendance?date=${formattedDate}&page=${page}&size=10&sort=createdAt,desc`,
+          `https://hrmaster.store/api/attendance?date=${formattedDate}&page=${page}&size=10&sort=createdAt,desc`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setAttendanceData(response.data.data);

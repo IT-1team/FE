@@ -169,7 +169,7 @@ const EmployeeSearch = () => {
   const fetchToken = async () => {
     try {
       const response = await axios.post(
-        'https://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/auth/login',
+        'https://hrmaster.store/api/auth/login',
         {
           loginId: 'admin01',
           password: 'password123',
@@ -213,18 +213,15 @@ const EmployeeSearch = () => {
         return;
       }
 
-      const response = await axios.get(
-        'http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/employees',
-        {
-          params: {
-            page: currentPage + 1,
-            size: itemsPerPage,
-            sort: 'createdAt,desc',
-          },
-          headers: { Authorization: `Bearer ${authToken}` },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get('https://hrmaster.store/api/employees', {
+        params: {
+          page: currentPage + 1,
+          size: itemsPerPage,
+          sort: 'createdAt,desc',
+        },
+        headers: { Authorization: `Bearer ${authToken}` },
+        withCredentials: true,
+      });
 
       if (response.data?.data?.responseDTOList) {
         const formattedData = response.data.data.responseDTOList.map(
