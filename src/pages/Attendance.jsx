@@ -10,7 +10,7 @@ import StatusButton from '../components/common/StatusButton';
 import Button from '../components/common/Button';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/Attendance.scss';
-import '../styles/pagination.scss';
+import '../styles/Pagination.scss';
 
 //날짜 한글로 바꾸기 작업용
 moment.locale('ko');
