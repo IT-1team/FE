@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import { SearchBar } from '../components/common/SearchBar';
@@ -13,34 +13,25 @@ const DEPARTMENT_TEAMS = {
   서한ENP: ['전체', '인사'],
   기획본부: ['전체', '인사', 'IT기획'],
 };
-// 계열사 목록에 '전체' 옵션 추가
+
 const COMPANIES = ['전체', ...Object.keys(DEPARTMENT_TEAMS)];
 
-//검색 옵션
 const searchOptions = [
   { value: 'name', label: '이름' },
   { value: 'empNum', label: '사번' },
 ];
 
 const EmployeeSearch = () => {
-  // 상태 변수 정의
   const [selectedCompany, setSelectedCompany] = useState('전체');
   const [selectedDepartment, setSelectedDepartment] = useState('전체');
-  const [searchType, setSearchType] = useState('name'); // 검색 유형
-  const [searchValue, setSearchValue] = useState(''); //검색어
-  const [filteredData, setFilteredData] = useState([]); //필터링된 데이터
-  const [currentPage, setCurrentPage] = useState(0); //현재 페이지
+  const [searchType, setSearchType] = useState('name');
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [apiData, setApiData] = useState([]); //api로 받아오는 데이터 상태
+  const [apiData, setApiData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [token, setToken] = useState(localStorage.getItem('authToken'));
-
-  // 전체 조회 핸들러
-  const handleFetchAll = () => {
-    setFilteredData(apiData);
-  };
-
-  // 내부적으로 로그인 후 토큰 받아오기
 
   const fetchToken = async () => {
     try {
@@ -51,101 +42,97 @@ const EmployeeSearch = () => {
           password: 'password123',
         },
         {
-          withCredentials: true,
           headers: { 'Content-Type': 'application/json' },
+          withCredentials: false,
         }
       );
 
-      const newToken = response.data?.data?.accessToken; // 서버 응답 구조에 맞게 수정
+      const newToken = response.data?.data?.accessToken;
       if (newToken) {
-        localStorage.setItem('authToken', newToken); // 로컬 스토리지에 저장
-        setToken(newToken); // 상태 변수 업데이트
+        localStorage.setItem('authToken', newToken);
+        setToken(newToken);
         return newToken;
-      } else {
-        console.error('응답에 액세스 토큰이 없습니다.');
-        return null;
       }
+      throw new Error('토큰이 없습니다.');
     } catch (error) {
-      console.error(
-        '로그인 실패:',
-        error.response ? error.response.data : error.message
-      );
+      console.error('로그인 실패:', error);
       return null;
     }
   };
 
-  //API 데이터 받아오기
-  const fetchEmployees = async () => {
-    try {
-      let authToken = token || localStorage.getItem('authToken');
+  const fetchEmployees = useCallback(
+    async (page = 1) => {
+      try {
+        let authToken = token || localStorage.getItem('authToken');
 
-      if (!authToken) {
-        console.log('토큰이 없습니다. 로그인 시도 중...');
-        authToken = await fetchToken();
+        if (!authToken) {
+          authToken = await fetchToken();
+        }
+
+        if (!authToken) {
+          console.error('유효한 인증 토큰을 가져오지 못했습니다.');
+          return;
+        }
+
+        const response = await axios.get(
+          'https://hrmaster.store/api/employees',
+          {
+            params: {
+              page: page,
+              size: itemsPerPage,
+              sort: 'createdAt,desc',
+            },
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              'Content-Type': 'application/json',
+            },
+            withCredentials: false,
+          }
+        );
+
+        if (response.data && response.data.data) {
+          const { data } = response.data;
+          // 여기서 employeeId를 명시적으로 추가
+          const enrichedData = (data.responseDTOList || []).map(employee => ({
+            ...employee,
+            employeeId: employee.employeeId || employee.empNum,
+          }));
+
+          setApiData(enrichedData);
+          setFilteredData(enrichedData);
+          setTotalPages(data.totalPages || 1);
+        }
+      } catch (error) {
+        console.error('직원 정보 가져오기 오류:', {
+          message: error.message,
+          status: error.response?.status,
+          data: error.response?.data,
+        });
       }
-
-      if (!authToken) {
-        console.error('유효한 인증 토큰을 가져오지 못했습니다.');
-        return;
-      }
-      let allEmployees = [];
-      let currentPage = 1;
-      let totalPages = 1;
-
-      const response = await axios.get('https://hrmaster.store/api/employees', {
-        params: {
-          page: currentPage + 1,
-          size: itemsPerPage,
-          sort: 'createdAt,desc',
-        },
-        headers: { Authorization: `Bearer ${authToken}` },
-        withCredentials: true,
-      });
-
-        const { data } = response.data;
-        const formattedEmployees = data.responseDTOList.map(employee => ({
-          empNum: employee.empNUM.toString(),
-          name: employee.name,
-          department: employee.departmentName,
-          teamname: employee.teamName,
-          rank: employee.emRank,
-          phoneNum: employee.phoneNum,
-        }));
-        allEmployees = [...allEmployees, ...formattedEmployees];
-        totalPages = data.totalPages;
-        currentPage++;
-      } while (currentPage <= totalPages);
-
-      setApiData(allEmployees);
-      setFilteredData(allEmployees);
-    } catch (error) {
-      console.error('직원 정보 가져오기 오류:', error);
-    }
-  };
+    },
+    [token, itemsPerPage]
+  );
 
   useEffect(() => {
     const initializeAuth = async () => {
       let authToken = localStorage.getItem('authToken');
 
       if (!authToken) {
-        console.log('토큰이 없습니다. 로그인 시도 중...');
         authToken = await fetchToken();
       }
 
       if (authToken) {
-        console.log('사용할 인증 토큰:', authToken);
-        setToken(authToken); // 상태 변수 업데이트
-        await fetchEmployees(); // 직원 정보 가져오기
+        setToken(authToken);
+        await fetchEmployees(1);
       } else {
         console.error('로그인 실패: 토큰을 받아오지 못했습니다.');
       }
     };
 
     initializeAuth();
-  }, []);
+  }, [fetchEmployees]);
 
-  // 검색 핸들러
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     const result = apiData.filter(item => {
       const companyMatch =
         selectedCompany === '전체' || item.department === selectedCompany;
@@ -153,38 +140,39 @@ const EmployeeSearch = () => {
         selectedDepartment === '전체' || item.teamname === selectedDepartment;
       const searchMatch =
         !searchValue ||
-        item[searchType].toLowerCase().includes(searchValue.toLowerCase());
+        (item[searchType]?.toLowerCase() || '').includes(
+          searchValue.toLowerCase()
+        );
+
       return companyMatch && departmentMatch && searchMatch;
     });
+
     setFilteredData(result);
     setCurrentPage(1);
-  };
-  // 계열사 변경 핸들러
+  }, [apiData, selectedCompany, selectedDepartment, searchType, searchValue]);
+
   const handleCompanyChange = value => {
     setSelectedCompany(value);
     setSelectedDepartment('전체');
   };
 
-  // 부서 변경 핸들러
-  const handleDepartmentChange = value => {
-    setSelectedDepartment(value);
+  const handleFetchAll = () => {
+    setFilteredData(apiData);
+    setCurrentPage(1);
   };
 
-  // 현재 페이지의 데이터 계산
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
-  const paginate = pageNumber => setCurrentPage(pageNumber);
-
-
-  //컴포넌트 마운트 시 전체 데이터 로드
   useEffect(() => {
     handleSearch();
-  }, [selectedCompany, selectedDepartment, searchType, searchValue]);
+  }, [handleSearch]);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredData.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
-    <div>
+    <div className="employee-search-container">
       <h2>사원 조회</h2>
       <SearchBar
         companies={COMPANIES}
@@ -195,7 +183,7 @@ const EmployeeSearch = () => {
         searchValue={searchValue}
         searchOptions={searchOptions}
         onCompanyChange={handleCompanyChange}
-        onDepartmentChange={handleDepartmentChange}
+        onDepartmentChange={setSelectedDepartment}
         onSearchTypeChange={setSearchType}
         onSearchValueChange={setSearchValue}
         onFetchAll={handleFetchAll}
@@ -209,7 +197,7 @@ const EmployeeSearch = () => {
         pageCount={Math.ceil(filteredData.length / itemsPerPage)}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
-        onPageChange={({ selected }) => paginate(selected + 1)}
+        onPageChange={({ selected }) => setCurrentPage(selected + 1)}
         containerClassName={'pagination'}
         pageClassName={'page-item'}
         pageLinkClassName={'page-link'}
@@ -220,6 +208,7 @@ const EmployeeSearch = () => {
         breakClassName={'page-item'}
         breakLinkClassName={'page-link'}
         activeClassName={'active'}
+        forcePage={currentPage - 1}
       />
     </div>
   );

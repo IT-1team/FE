@@ -1,7 +1,12 @@
-.employee-search {
-  width: calc(100% - 40px);
-  max-width: 800px;
-  margin: auto;
+.employee-search-container {
+  padding-top: 40px; // 헤더 높이를 고려한 패딩
+  max-width: 1200px; // 헤더와 일치하는 최대 너비
+  margin: 0 auto;
+
+  h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
 
   .pagination {
     text-align: center;
