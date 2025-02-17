@@ -4,7 +4,7 @@ import axios from 'axios';
 import { SearchBar } from '../components/common/SearchBar';
 import { EmployeeTable } from '../components/features/EmployeeTable';
 import '../styles/EmployeeSearch.scss';
-import '../styles/pagination.scss';
+import '../styles/Pagination.scss';
 
 const DEPARTMENT_TEAMS = {
   한국무브넥스: ['전체', '안전', '영업', '품질'],
