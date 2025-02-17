@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { AddressModal } from './AddressModal';
 import { ExcelUploadModal } from './ExcelUploadModal';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import TextField from '../components/common/TextField';
 import Button from '../components/common/Button';
 import Calendar from 'react-calendar';
@@ -87,11 +88,87 @@ function EmployeeRegistration() {
     setAddressModalOpen(false);
   };
 
-  const handleSubmit = e => {
+  // 내부적으로 로그인 후 토큰 받아오기
+  const fetchToken = async () => {
+    try {
+      const response = await axios.post(
+        'http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/auth/login',
+        {
+          loginId: 'admin01',
+          password: 'password123',
+        },
+        {
+          withCredentials: true,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      const newToken = response.data?.data?.accessToken; // 서버 응답 구조에 맞게 수정
+      if (newToken) {
+        localStorage.setItem('authToken', newToken); // 로컬 스토리지에 저장
+        setToken(newToken); // 상태 변수 업데이트
+        return newToken;
+      } else {
+        console.error('응답에 액세스 토큰이 없습니다.');
+        return null;
+      }
+    } catch (error) {
+      console.error(
+        '로그인 실패:',
+        error.response ? error.response.data : error.message
+      );
+      return null;
+    }
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    alert('사원이 등록되었습니다.');
-    navigate('/dashboard');
-    // 여기에 제출 로직 추가
+
+    try {
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        console.error('Authentication token not found');
+        return;
+      }
+
+      const employeeData2 = {
+        empNUM: employeeData.empNum,
+        name: employeeData.name,
+        address: employeeData.address,
+        address2: employeeData.detailAddress,
+        departmentName: employeeData.departmentName,
+        teamName: employeeData.teamName,
+        phoneNum: employeeData.phoneNum,
+        email: employeeData.email,
+        hireDate: employeeData.hireDate,
+        salary: employeeData.salary,
+        emRank: employeeData.rank,
+        status: '재직중',
+      };
+
+      const response = await axios.post(
+        'http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/employees',
+        employeeData2,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        alert('사원이 성공적으로 등록되었습니다.');
+        navigate('/dashboard');
+      } else {
+        console.error('Employee registration failed:', response.data);
+        alert('사원 등록에 실패했습니다. 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      console.error('Error registering employee:', error);
+      alert('사원 등록 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   // 파일 선택 처리

@@ -4,131 +4,7 @@ import axios from 'axios';
 import { SearchBar } from '../components/common/SearchBar';
 import { EmployeeTable } from '../components/features/EmployeeTable';
 import '../styles/EmployeeSearch.scss';
-import '../styles/Pagination.scss';
-
-//dummy 데이터
-// const dummyData = [
-//   {
-//     empNum: '12340',
-//     name: '김지원',
-//     department: '기획본부',
-//     teamname: 'IT기획',
-//     rank: '대리',
-//     phoneNum: '010-1234-5678',
-//   },
-//   {
-//     empNum: '12341',
-//     name: '박민수',
-//     department: '서한ENP',
-//     teamname: '인사',
-//     rank: '과장',
-//     phoneNum: '010-2345-6789',
-//   },
-//   {
-//     empNum: '12342',
-//     name: '이서연',
-//     department: '한국무브넥스',
-//     teamname: '영업',
-//     rank: '사원',
-//     phoneNum: '010-3456-7890',
-//   },
-//   {
-//     empNum: '12343',
-//     name: '최영훈',
-//     department: '한국무브넥스',
-//     teamname: '영업',
-//     rank: '부장',
-//     phoneNum: '010-4567-8901',
-//   },
-//   {
-//     empNum: '12344',
-//     name: '정하은',
-//     department: '기획본부',
-//     teamname: 'IT기획',
-//     rank: '사원',
-//     phoneNum: '010-5678-9012',
-//   },
-//   {
-//     empNum: '12345',
-//     name: '한지민',
-//     department: '서한이노빌리티',
-//     teamname: 'ESG',
-//     rank: '대리',
-//     phoneNum: '010-6789-0123',
-//   },
-//   {
-//     empNum: '12346',
-//     name: '오세훈',
-//     department: '캄텍',
-//     teamname: 'SOE',
-//     rank: '과장',
-//     phoneNum: '010-7890-1234',
-//   },
-//   {
-//     empNum: '12347',
-//     name: '김민재',
-//     department: '캄텍',
-//     teamname: '영업',
-//     rank: '사원',
-//     phoneNum: '010-8901-2345',
-//   },
-//   {
-//     empNum: '12348',
-//     name: '박지성',
-//     department: '한국무브넥스',
-//     teamname: '품질',
-//     rank: '대리',
-//     phoneNum: '010-9012-3456',
-//   },
-//   {
-//     empNum: '12349',
-//     name: '손흥민',
-//     department: '기획본부',
-//     teamname: 'IT기획',
-//     rank: '부장',
-//     phoneNum: '010-0123-4567',
-//   },
-//   {
-//     empNum: '12350',
-//     name: '이강인',
-//     department: '서한ENP',
-//     teamname: '인사',
-//     rank: '사원',
-//     phoneNum: '010-1234-5678',
-//   },
-//   {
-//     empNum: '12351',
-//     name: '황희찬',
-//     department: '서한이노빌리티',
-//     teamname: '공정기술',
-//     rank: '과장',
-//     phoneNum: '010-2345-6789',
-//   },
-//   {
-//     empNum: '12352',
-//     name: '조규성',
-//     department: '캄텍',
-//     teamname: '생산관리',
-//     rank: '대리',
-//     phoneNum: '010-3456-7890',
-//   },
-//   {
-//     empNum: '12353',
-//     name: '김연아',
-//     department: '한국무브넥스',
-//     teamname: '영업',
-//     rank: '사원',
-//     phoneNum: '010-4567-8901',
-//   },
-//   {
-//     empNum: '12354',
-//     name: '유재석',
-//     department: '서한이노빌리티',
-//     teamname: '품질',
-//     rank: '부장',
-//     phoneNum: '010-5678-9012',
-//   },
-// ];
+import '../styles/pagination.scss';
 
 const DEPARTMENT_TEAMS = {
   한국무브넥스: ['전체', '안전', '영업', '품질'],
@@ -154,7 +30,7 @@ const EmployeeSearch = () => {
   const [searchValue, setSearchValue] = useState(''); //검색어
   const [filteredData, setFilteredData] = useState([]); //필터링된 데이터
   const [currentPage, setCurrentPage] = useState(0); //현재 페이지
-  const itemsPerPage = 10;
+  const [itemsPerPage] = useState(10);
   const [apiData, setApiData] = useState([]); //api로 받아오는 데이터 상태
   const [totalPages, setTotalPages] = useState(1);
   const [token, setToken] = useState(localStorage.getItem('authToken'));
@@ -212,6 +88,9 @@ const EmployeeSearch = () => {
         console.error('유효한 인증 토큰을 가져오지 못했습니다.');
         return;
       }
+      let allEmployees = [];
+      let currentPage = 1;
+      let totalPages = 1;
 
       const response = await axios.get('https://hrmaster.store/api/employees', {
         params: {
@@ -223,31 +102,24 @@ const EmployeeSearch = () => {
         withCredentials: true,
       });
 
-      if (response.data?.data?.responseDTOList) {
-        const formattedData = response.data.data.responseDTOList.map(
-          employee => ({
-            empNum: employee.empNUM.toString(),
-            name: employee.name,
-            department: employee.departmentName,
-            teamname: employee.teamName,
-            rank: employee.emRank,
-            phoneNum: employee.phoneNum,
-          })
-        );
-        setApiData(formattedData);
-        setFilteredData(formattedData);
-        setTotalPages(response.data.data.totalPages || 1);
-      } else {
-        console.error('API 응답 구조가 예상과 다릅니다:', response.data);
-      }
+        const { data } = response.data;
+        const formattedEmployees = data.responseDTOList.map(employee => ({
+          empNum: employee.empNUM.toString(),
+          name: employee.name,
+          department: employee.departmentName,
+          teamname: employee.teamName,
+          rank: employee.emRank,
+          phoneNum: employee.phoneNum,
+        }));
+        allEmployees = [...allEmployees, ...formattedEmployees];
+        totalPages = data.totalPages;
+        currentPage++;
+      } while (currentPage <= totalPages);
+
+      setApiData(allEmployees);
+      setFilteredData(allEmployees);
     } catch (error) {
-      if (error.response?.status === 401) {
-        console.error('인증 오류. 다시 로그인이 필요합니다.');
-        setToken(null);
-        localStorage.removeItem('authToken');
-      } else {
-        console.error('직원 정보 가져오기 오류:', error);
-      }
+      console.error('직원 정보 가져오기 오류:', error);
     }
   };
 
@@ -285,6 +157,7 @@ const EmployeeSearch = () => {
       return companyMatch && departmentMatch && searchMatch;
     });
     setFilteredData(result);
+    setCurrentPage(1);
   };
   // 계열사 변경 핸들러
   const handleCompanyChange = value => {
@@ -298,18 +171,17 @@ const EmployeeSearch = () => {
   };
 
   // 현재 페이지의 데이터 계산
-  const offset = currentPage * itemsPerPage;
-  const currentPageData = filteredData.slice(offset, offset + itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // 페이지 변경 핸들러
-  const handlePageChange = ({ selected }) => {
-    setCurrentPage(selected);
-  };
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
 
   //컴포넌트 마운트 시 전체 데이터 로드
   useEffect(() => {
     handleSearch();
-  }, [selectedCompany, selectedDepartment, searchType, searchValue, apiData]);
+  }, [selectedCompany, selectedDepartment, searchType, searchValue]);
 
   return (
     <div>
@@ -329,7 +201,7 @@ const EmployeeSearch = () => {
         onFetchAll={handleFetchAll}
         onSearch={handleSearch}
       />
-      <EmployeeTable data={currentPageData} />
+      <EmployeeTable data={currentItems} />
       <ReactPaginate
         previousLabel={'이전'}
         nextLabel={'다음'}
@@ -337,7 +209,7 @@ const EmployeeSearch = () => {
         pageCount={Math.ceil(filteredData.length / itemsPerPage)}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
-        onPageChange={handlePageChange}
+        onPageChange={({ selected }) => paginate(selected + 1)}
         containerClassName={'pagination'}
         pageClassName={'page-item'}
         pageLinkClassName={'page-link'}

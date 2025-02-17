@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Calendar from 'react-calendar';
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
+import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/ko';
 import { SearchBar } from '../components/common/SearchBar';
 import AttendanceTable from '../components/features/AttendanceTable';
 import StatusButton from '../components/common/StatusButton';
+import Button from '../components/common/Button';
 import Button from '../components/common/Button';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/Attendance.scss';
@@ -136,6 +138,17 @@ const Attendance = () => {
     status: item.clockStatus,
   }));
 
+  const formattedData = attendanceData.responseDTOList.map(item => ({
+    date: moment(item.today).format('YYYY-MM-DD'),
+    name: item.name,
+    department: item.departmentName,
+    team: item.teamName,
+    rank: item.emRank,
+    checkInTime: moment(item.clockIn).format('HH:mm'),
+    checkOutTime: moment(item.clockOut).format('HH:mm'),
+    status: item.clockStatus,
+  }));
+
   // 데이터 필터링 함수
   const filterAttendanceData = useCallback(() => {
     return formattedData.filter(item => {
@@ -151,11 +164,17 @@ const Attendance = () => {
           item[filterState.searchType]
             .toLowerCase()
             .includes(filterState.searchValue.toLowerCase()));
+        (item[filterState.searchType] &&
+          item[filterState.searchType]
+            .toLowerCase()
+            .includes(filterState.searchValue.toLowerCase()));
       const statusMatch =
         filterState.status === '전체' || item.status === filterState.status;
 
       return companyMatch && departmentMatch && searchMatch && statusMatch;
+      return companyMatch && departmentMatch && searchMatch && statusMatch;
     });
+  }, [formattedData, filterState]);
   }, [formattedData, filterState]);
 
   useEffect(() => {
@@ -164,6 +183,13 @@ const Attendance = () => {
 
   // 필터/데이터 변경 시 필터링
   useEffect(() => {
+    fetchAttendanceData(selectedDate);
+  }, [selectedDate, fetchAttendanceData]);
+
+  // 필터/데이터 변경 시 필터링
+  useEffect(() => {
+    const filtered = filterAttendanceData();
+    setFilteredData(filtered);
     const filtered = filterAttendanceData();
     setFilteredData(filtered);
     setCurrentPage(0);
@@ -171,6 +197,8 @@ const Attendance = () => {
 
   // 날짜 변경 핸들러
   const handleDateChange = days => {
+    const newDate = moment(selectedDate).add(days, 'days').toDate();
+    setSelectedDate(newDate);
     const newDate = moment(selectedDate).add(days, 'days').toDate();
     setSelectedDate(newDate);
   };
@@ -228,10 +256,12 @@ const Attendance = () => {
         {/* 현재 선택된 데이터의 status 표시 */}
         <div className="status-buttons">
           {['전체', '정상', '이상'].map(status => (
+          {['전체', '정상', '이상'].map(status => (
             <StatusButton
               key={status}
               label={status}
               count={
+                filteredData.filter(
                 filteredData.filter(
                   item =>
                     item.date === moment(selectedDate).format('YYYY-MM-DD') &&
@@ -293,6 +323,7 @@ const Attendance = () => {
         breakClassName={'page-item'}
         breakLinkClassName={'page-link'}
         activeClassName={'active'}
+        forcePage={attendanceData.currentPage - 1}
         forcePage={attendanceData.currentPage - 1}
       />
     </div>
