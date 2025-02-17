@@ -11,14 +11,9 @@ import '../../styles/Sidebar.scss';
 
 const Sidebar = () => {
   const menuItems = [
-    { icon: Users, label: '사원 정보 등록', badge: null },
-    { icon: Settings, label: '사원 조회', badge: null },
-    { icon: Network, label: '네트워크 관리', badge: null },
-    { icon: FileText, label: '로그 관리', badge: null },
-    { icon: Settings, label: '일반 설정', badge: null },
-    { icon: Network, label: '네트워크 검사', badge: null },
-    { icon: Bell, label: '알림 센터', badge: 2 },
-    { icon: HelpCircle, label: '도움말', badge: null },
+    { path: '/dashboard/registration', label: '사원 정보 등록' },
+    { path: '/dashboard/search', label: '사원 조회' },
+    { path: '/dashboard/attendance', label: '근태 관리' },
   ];
 
   return (

@@ -96,12 +96,14 @@ const LandingPage = () => {
             icon={FcBusinesswoman}
           />
           <div className="personal-board-circles">
-            <Circle
-              icon={BsPersonCheck}
-              size="xs"
-              label="근태조회"
-              labelPosition="side"
-            />
+            <Link to="/dashboard/attendance" className="circle-link">
+              <Circle
+                icon={BsPersonCheck}
+                size="xs"
+                label="근태조회"
+                labelPosition="side"
+              />
+            </Link>
           </div>
         </div>
       </div>

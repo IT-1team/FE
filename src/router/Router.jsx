@@ -2,6 +2,7 @@ import React from 'react';
 import RouterPath from './RouterPath';
 import EmployeeRegistration from '../pages/EmployeeRegistration';
 import EmployeeSearch from '../pages/EmployeeSearch';
+import Attendance from '../pages/Attendance';
 import Login from '../pages/Login';
 import Layout from '../components/features/Layout';
 import LandingPage from '../pages/LandingPage';
@@ -28,6 +29,10 @@ const Router = () => {
         {
           path: RouterPath.SEARCH,
           element: <EmployeeSearch />,
+        },
+        {
+          path: RouterPath.ATTENDANCE,
+          element: <Attendance />,
         },
       ],
     },
