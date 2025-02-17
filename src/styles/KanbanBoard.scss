@@ -114,6 +114,14 @@ $board-sizes: (
     text-align: center;
   }
 
+  .main-title-icon {
+    margin-bottom: 1rem;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
   .main-title-text {
     font-size: 3.0rem;
     font-weight: 700;
@@ -125,4 +133,6 @@ $board-sizes: (
       color: #666;
     }
   }
+
+  
 }

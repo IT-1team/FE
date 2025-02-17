@@ -18,6 +18,11 @@ const KanbanBoard = ({
       <div className="kanban-board__column">
         {title && (
           <div className="kanban-board__main-title">
+            {IconComponent && (
+              <div className="main-title-icon">
+                <IconComponent size={100} />
+              </div>
+            )}
             <h2 className="main-title-text" style={{ color: titleColor }}>
               {title.includes('의') ? (
                 <>
