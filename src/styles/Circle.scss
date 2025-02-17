@@ -1,0 +1,109 @@
+.circle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+
+    &.circle-label-bottom {
+        flex-direction: column;
+        
+        .circle-label {
+          text-align: center;
+        }
+      }
+
+    &.circle-label-side {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        
+        .circle-label {
+          text-align: left;
+        }
+      }
+    
+      .circle-label {
+        font-size: 0.875rem;
+        color: #212529;
+        font-weight: 500;
+      }
+
+
+.profile-circle {
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(0,0,0,0.05);
+    }
+
+
+&__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+}
+
+// Size variations
+&--xs {
+    width: 48px;
+    height: 48px;
+
+    .profile-circle__icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+&--sm {
+    width: 64px;
+    height: 64px;
+
+    .profile-circle__icon {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+&--md {
+    width: 80px;
+    height: 80px;
+
+    .profile-circle__icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+&--lg {
+    width: 96px;
+    height: 96px;
+
+    .profile-circle__icon {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+&--xl {
+    width: 160px;
+    height: 160px;
+}
+
+&--border {
+    border: 2px solid #ddd;
+    padding: 2px;
+}
+
+&__icon {
+    color: #212529;
+}
+}
+}
+

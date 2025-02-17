@@ -1,0 +1,105 @@
+.landing-container {
+  padding: 5rem 2rem 2rem 2rem;
+  min-height: 100vh;
+  min-width: 1200px;
+  overflow-x: auto;
+
+  .landing-boards {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    width: 1200px;
+    position: relative;
+
+    .landing-boards-group {
+      position: relative;
+
+      .medium-board {
+        position: relative;
+
+        .progress-section {
+          position: absolute;
+          bottom: -100px;
+          left: 50%;
+          transform: translate(-50%);
+          width: 80%;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+        
+        .icon-circles {
+          position : absolute;
+          bottom: -220px;
+          transform: translate(-50%);
+          left: 50%;
+          display: flex;
+          justify-content: center;
+          gap: 3rem;
+          width: 320px;
+          z-index: 1;
+        }
+        
+        // medium 칸반보드 내부에 xs-small 보드들을 배치
+        .small-boards {
+          position: absolute;
+          bottom: 60px;  // medium 보드 내부 여백
+          left: 0;
+          right: 0;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          gap: 1rem;
+          padding: 0 24px;
+        }
+      }
+    }
+
+    .large-board-container
+    .personal-board-container {
+      position: relative;
+      margin-bottom: 3rem; 
+    }
+
+    .large-board-circles,
+    .personal-board-circles {
+      margin-top: -20rem; // 칸반보드와 서클 사이 간격 조정
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 320px;
+      position: relative; // 절대 위치에서 상대 위치로 변경
+      left: 50%;
+      transform: translateX(-50%);
+
+      .circle-link {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: flex-start;
+        padding-left: 3rem;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      > div {
+        display: flex;
+        align-items: center;
+        width: 100%; // 전체 너비 사용
+        justify-content: flex-start; // 가운데 정렬
+        padding-left: 3rem;
+      }
+    }
+  }
+
+  .landing-boards-bottom {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 1.0rem;
+    margin-top: -8rem;
+  }
+}

@@ -1,0 +1,67 @@
+.date-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  position: relative;
+
+  .date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .prev,
+    .next {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      background-color: #f0f0f0;
+      color: #333;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+
+    .current-date {
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #333;
+    }
+  }
+  .calendar-container {
+    position: relative;
+    display: inline-block; /* 또는 flex, 레이아웃에 따라 조정 */
+  }
+  .calendar-toggle {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .calendar-popup {
+    position: absolute;
+    top: calc(100% + 10px); /* 캘린더를 버튼 아래로 배치 */
+    // right: 0; /* 오른쪽 끝 정렬 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+
+    .react-calendar {
+      border-radius: inherit; /* 캘린더의 모서리를 둥글게 */
+      border-color: #ddd; /* 캘린더 테두리 색상 */
+    }
+  }
+}
