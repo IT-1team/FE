@@ -6,21 +6,15 @@ const Button = ({
   buttonSize,
   buttonColor,
   children,
-  action,
   type = 'button',
+  onClick, // 추가된 부분
 }) => {
-  const handleClick = () => {
-    if (action) {
-      action();
-    }
-  };
-
   return (
     <button
       type={type}
-      onClick={() => action()}
       disabled={btnOn}
       className={`${buttonSize} ${buttonColor}`}
+      onClick={onClick} // 추가된 부분
     >
       {children}
     </button>
