@@ -7,12 +7,14 @@ const Button = ({
   buttonColor,
   children,
   type = 'button',
+  onClick, // 추가된 부분
 }) => {
   return (
     <button
       type={type}
       disabled={btnOn}
       className={`${buttonSize} ${buttonColor}`}
+      onClick={onClick} // 추가된 부분
     >
       {children}
     </button>
