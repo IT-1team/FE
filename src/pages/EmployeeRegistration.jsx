@@ -206,7 +206,10 @@ function EmployeeRegistration() {
                 buttonSize="smallButton"
                 buttonColor="dark"
                 type="button"
-                action={() => setAddressModalOpen(true)}
+                onClick={() => {
+                  console.log('주소 검색 버튼 클릭');
+                  setAddressModalOpen(true);
+                }}
               >
                 주소검색
               </Button>
