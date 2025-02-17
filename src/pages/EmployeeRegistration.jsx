@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AddressModal } from './AddressModal';
 import { ExcelUploadModal } from './ExcelUploadModal';
 import { useNavigate } from 'react-router-dom';
@@ -11,18 +11,17 @@ import '../styles/EmployeeRegistration.scss';
 
 // 입력 전 초기 사원 정보는 공백으로 설정
 const INITIAL_EMPLOYEE_DATA = {
-  empNum: '',
   name: '',
   address: '',
-  detailAddress: '',
+  address2: '',
+  departmentName: '',
+  teamName: '',
   phoneNum: '',
   email: '',
   hireDate: '',
   salary: '',
-  rank: '',
-  departmentName: '',
-  teamName: '',
-  zipCode: '',
+  emRank: '',
+  status: '재직중',
 };
 
 // 허용 가능한 엑셀 파일 타입
@@ -52,6 +51,7 @@ function EmployeeRegistration() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [employeeData, setEmployeeData] = useState(INITIAL_EMPLOYEE_DATA);
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem('authToken'));
   const navigate = useNavigate();
 
   // 입력값 변경 처리
@@ -92,7 +92,7 @@ function EmployeeRegistration() {
   const fetchToken = async () => {
     try {
       const response = await axios.post(
-        'http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/auth/login',
+        'https://hrmaster.store/api/auth/login',
         {
           loginId: 'admin01',
           password: 'password123',
@@ -108,15 +108,10 @@ function EmployeeRegistration() {
         localStorage.setItem('authToken', newToken); // 로컬 스토리지에 저장
         setToken(newToken); // 상태 변수 업데이트
         return newToken;
-      } else {
-        console.error('응답에 액세스 토큰이 없습니다.');
-        return null;
       }
+      throw new Error('토큰이 없습니다.');
     } catch (error) {
-      console.error(
-        '로그인 실패:',
-        error.response ? error.response.data : error.message
-      );
+      console.error('로그인 실패:');
       return null;
     }
   };
@@ -125,15 +120,18 @@ function EmployeeRegistration() {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('authToken');
+      let token = localStorage.getItem('authToken');
+      console.log('Current token:', token);
 
       if (!token) {
-        console.error('Authentication token not found');
-        return;
+        token = await fetchToken();
+        if (!token) {
+          alert('인증에 실패했습니다.');
+          return;
+        }
       }
 
-      const employeeData2 = {
-        empNUM: employeeData.empNum,
+      const requestData = {
         name: employeeData.name,
         address: employeeData.address,
         address2: employeeData.detailAddress,
@@ -143,17 +141,26 @@ function EmployeeRegistration() {
         email: employeeData.email,
         hireDate: employeeData.hireDate,
         salary: employeeData.salary,
-        emRank: employeeData.rank,
+        emRank: employeeData.emRank,
         status: '재직중',
       };
 
+      console.log('Request URL:', 'https://hrmaster.store/api/employees');
+      console.log('Request headers:', {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      });
+      console.log('Request data:', requestData);
+
       const response = await axios.post(
-        'http://ec2-43-201-128-228.ap-northeast-2.compute.amazonaws.com/api/employees',
-        employeeData2,
+        'https://hrmaster.store/api/employees',
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            Accept: 'application/json',
+            'Accept-Charset': 'utf-8',
           },
         }
       );
@@ -166,10 +173,30 @@ function EmployeeRegistration() {
         alert('사원 등록에 실패했습니다. 다시 시도해 주세요.');
       }
     } catch (error) {
-      console.error('Error registering employee:', error);
-      alert('사원 등록 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      console.error('Error details:', {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+
+      if (error.response?.data?.message) {
+        alert(`등록 실패: ${error.response.data.message}`);
+      } else {
+        alert('사원 등록 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      }
     }
   };
+
+  useEffect(() => {
+    const checkAndFetchToken = async () => {
+      let token = localStorage.getItem('authToken');
+      if (!token) {
+        token = await fetchToken();
+      }
+    };
+
+    checkAndFetchToken();
+  }, []);
 
   // 파일 선택 처리
   const handleFileChange = e => {
@@ -208,12 +235,12 @@ function EmployeeRegistration() {
               />
             </div>
             <div className="form-group">
-              <label>사번</label>
+              <label>재직여부</label>
               <TextField
-                name="empNum"
+                name="status"
                 size="medium"
-                placeholder="사번을 입력하세요"
-                value={employeeData.empNum}
+                placeholder="재직여부를 입력하세요."
+                value={employeeData.status}
                 onChange={handleChange}
               />
             </div>
@@ -321,10 +348,10 @@ function EmployeeRegistration() {
             <div className="form-group">
               <label>직급</label>
               <TextField
-                name="rank"
+                name="emRank"
                 size="medium"
                 placeholder="직급을 입력하세요"
-                value={employeeData.rank}
+                value={employeeData.emRank}
                 onChange={handleChange}
               />
             </div>
@@ -389,7 +416,7 @@ function EmployeeRegistration() {
             buttonSize="smallButton"
             buttonColor="light"
             type="button"
-            action={() => setExcelModalOpen(true)}
+            onClick={() => setExcelModalOpen(true)}
           >
             Excel 등록
           </Button>
