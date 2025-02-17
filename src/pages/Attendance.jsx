@@ -7,7 +7,6 @@ import 'moment/locale/ko';
 import { SearchBar } from '../components/common/SearchBar';
 import AttendanceTable from '../components/features/AttendanceTable';
 import StatusButton from '../components/common/StatusButton';
-import Button from '../components/common/Button';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/Attendance.scss';
 import '../styles/Pagination.scss';
