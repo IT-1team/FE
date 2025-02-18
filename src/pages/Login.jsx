@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
+import { useLogin } from '../api/hooks/authAPI';
 import '/src/styles/Login.scss';
 import logoImage from '/logo.png';
 
 function Login() {
   const navigate = useNavigate();
+  const { mutate: login } = useLogin();
   // 사용자 입력값을 관리하는 state
   const [credentials, setCredentials] = useState({
     id: '',
@@ -29,26 +31,23 @@ function Login() {
       onSuccess: data => {
         console.log('전체 로그인 응답:', data);
 
-        if (typeof window !== 'undefined') {
-          console.log('window 존재함');
-          console.log('localStorage 사용 가능:', !!window.localStorage);
+        // data.data.accessToken으로 변경
+        const token = data.data.accessToken;
 
-          try {
-            const token = data.token;
-            localStorage.setItem('accessToken', token);
-            console.log('토큰 저장 성공');
-          } catch (error) {
-            console.error('토큰 저장 실패:', error);
-          }
+        if (token) {
+          localStorage.setItem('accessToken', token);
+          console.log('토큰 저장 성공');
+          navigate('/dashboard');
         } else {
-          console.error('window 객체 없음');
+          console.error('토큰을 찾을 수 없습니다.');
         }
-
-        navigate('/dashboard');
+      },
+      onError: error => {
+        console.error('로그인 실패:', error);
+        alert('로그인에 실패했습니다.');
       },
     });
   };
-
   return (
     <div className="login-container">
       <div className="login-box">
