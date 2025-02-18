@@ -22,9 +22,31 @@ function Login() {
   };
 
   // 폼 제출 처리 함수
-  const handleSubmit = (e = null) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    navigate('/dashboard');
+
+    login(credentials, {
+      onSuccess: data => {
+        console.log('전체 로그인 응답:', data);
+
+        if (typeof window !== 'undefined') {
+          console.log('window 존재함');
+          console.log('localStorage 사용 가능:', !!window.localStorage);
+
+          try {
+            const token = data.token;
+            localStorage.setItem('accessToken', token);
+            console.log('토큰 저장 성공');
+          } catch (error) {
+            console.error('토큰 저장 실패:', error);
+          }
+        } else {
+          console.error('window 객체 없음');
+        }
+
+        navigate('/dashboard');
+      },
+    });
   };
 
   return (
