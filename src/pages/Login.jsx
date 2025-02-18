@@ -10,7 +10,7 @@ function Login() {
   const { mutate: login } = useLogin();
   // 사용자 입력값을 관리하는 state
   const [credentials, setCredentials] = useState({
-    id: '',
+    loginId: '',
     password: '',
   });
 
@@ -58,7 +58,7 @@ function Login() {
           <div className="input-group">
             <input
               type="text"
-              name="id"
+              name="loginId"
               placeholder="ID"
               value={credentials.id}
               onChange={handleChange}
@@ -74,7 +74,7 @@ function Login() {
             />
           </div>
           <Button
-            btnOn={!credentials.id || !credentials.password}
+            btnOn={!credentials.loginId || !credentials.password}
             buttonSize="bigButton"
             buttonColor="dark"
             type="submit"
