@@ -2,18 +2,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import '/src/styles/Login.scss';
-import { useLogin } from '../api/hooks/authAPI';
+import logoImage from '/logo.png';
 
 function Login() {
   const navigate = useNavigate();
   // 사용자 입력값을 관리하는 state
   const [credentials, setCredentials] = useState({
-    loginId: '',
+    id: '',
     password: '',
   });
-
-  //useLogin hook 사용
-  const { mutate: login, isLoading } = useLogin();
 
   // 입력값 변경 처리 함수
   const handleChange = e => {
@@ -27,33 +24,22 @@ function Login() {
   // 폼 제출 처리 함수
   const handleSubmit = (e = null) => {
     e.preventDefault();
-
-    login(credentials, {
-      onSuccess: data => {
-        console.log('로그인 성공:', data.message);
-        //대시 보드로 이동
-        navigate('./dashboard');
-      },
-      onError: error => {
-        console.error('로그인 실패', error);
-        alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
-      },
-    });
+    navigate('/dashboard');
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
         <div className="login-header">
-          <img src="/src/assets/logo.png" alt="Seohan HR" className="logo" />
+          <img src={logoImage} alt="Seohan HR" className="logo" />
         </div>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <input
               type="text"
-              name="loginId"
+              name="id"
               placeholder="ID"
-              value={credentials.loginId}
+              value={credentials.id}
               onChange={handleChange}
             />
           </div>
@@ -67,13 +53,12 @@ function Login() {
             />
           </div>
           <Button
-            btnOn={!credentials.loginId || !credentials.password}
+            btnOn={!credentials.id || !credentials.password}
             buttonSize="bigButton"
             buttonColor="dark"
             type="submit"
-            disabled={isLoading}
           >
-            {isLoading ? '로그인 중...' : '로그인'}
+            로그인
           </Button>
         </form>
       </div>
